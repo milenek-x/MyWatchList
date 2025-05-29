@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/splash_logo"
         android:layout_width="200dp"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:src="@drawable/ic_logo"
         android:scaleType="centerCrop"
         android:contentDescription="@string/app_name" />
