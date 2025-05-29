@@ -1,50 +1,58 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/searchFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/firefox_purple_variant">
 
     <!-- Search Bar with Back and Clear Buttons -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_bar_background">
 
         <!-- Back Button -->
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="Back"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            app:tint="@color/white" />
 
         <!-- Search EditText -->
         <EditText
             android:id="@+id/etSearchBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_toEndOf="@id/btnBack"
             android:layout_toStartOf="@id/btnClear"
             android:hint="Search movies..."
             android:inputType="text"
             android:imeOptions="actionSearch"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:paddingStart="8dp"
             android:paddingEnd="8dp" />
 
         <!-- Clear Button -->
         <ImageButton
             android:id="@+id/btnClear"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_clear"
             android:contentDescription="Clear"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            app:tint="@color/white" />
     </RelativeLayout>
 
     <!-- Progress Bar -->
@@ -54,7 +62,8 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:indeterminateTint="@color/firefox_pink"/>
 
     <!-- RecyclerView for Search Results -->
     <androidx.recyclerview.widget.RecyclerView

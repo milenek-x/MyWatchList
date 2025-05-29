@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:elevation="6dp">
+    android:elevation="6dp"
+    android:background="@color/firefox_purple_variant"
+    android:clipToPadding="false"
+    android:clipChildren="false">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,14 +18,17 @@
             android:id="@+id/ivPoster"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:background="@drawable/rounded_corner"
+            android:contentDescription="Movie Poster"
+            android:clipToOutline="true" />
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Movie Title"
-            android:textColor="@android:color/black"
+            android:textColor="@color/firefox_purple"
             android:textSize="18sp"
             android:textStyle="bold"
             android:paddingTop="8dp"
@@ -35,13 +40,12 @@
             android:scrollHorizontally="true"
             android:inputType="none" />
 
-
         <TextView
             android:id="@+id/tvType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Movie"
-            android:textColor="@android:color/black"
+            android:textColor="@color/firefox_pink"
             android:paddingTop="2dp" />
 
         <TextView
@@ -49,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Action, Drama"
-            android:textColor="@android:color/black"
+            android:textColor="@color/light_gray"
             android:paddingTop="2dp" />
 
         <LinearLayout
@@ -63,14 +67,18 @@
                 android:id="@+id/btnDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Details" />
+                android:text="Details"
+                android:backgroundTint="@color/firefox_purple"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/btnWatch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Watch"
-                android:layout_marginStart="8dp" />
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/firefox_pink"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

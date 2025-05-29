@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.MyWatchList" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/black</item>
+    <style name="Base.Theme.MyWatchList" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/firefox_purple</item>
+        <item name="colorPrimaryVariant">@color/firefox_purple_variant</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/black</item>
-        <item name="colorSecondaryVariant">@color/black</item>
+        <item name="colorSecondary">@color/firefox_pink</item>
+        <item name="colorSecondaryVariant">@color/firefox_purple</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:statusBarColor">@color/firefox_purple_variant</item>
     </style>
-
     <style name="Theme.MyWatchList" parent="Base.Theme.MyWatchList" />
-
 </resources>

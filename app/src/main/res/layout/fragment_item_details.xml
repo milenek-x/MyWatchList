@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@android:color/white">
+    android:background="@color/firefox_purple_variant">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,9 +17,10 @@
             android:layout_height="400dp"
             android:scaleType="centerCrop"
             android:contentDescription="Poster"
-            android:src="@drawable/rounded_corner" />
+            android:src="@drawable/rounded_corner"
+            android:layout_gravity="center_horizontal" />
 
-        <!-- Title (Movie or TV) -->
+        <!-- Title -->
         <TextView
             android:id="@+id/textTitle"
             android:layout_width="match_parent"
@@ -28,7 +29,7 @@
             android:text="Title"
             android:textAppearance="?android:textAppearanceLarge"
             android:textStyle="bold"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/firefox_pink" />
 
         <!-- Tagline -->
         <TextView
@@ -38,7 +39,7 @@
             android:text="Tagline"
             android:textStyle="italic"
             android:visibility="gone"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@color/light_gray" />
 
         <!-- Overview -->
         <TextView
@@ -48,23 +49,25 @@
             android:layout_marginTop="8dp"
             android:text="Overview"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/white" />
 
-        <!-- Release / Air Date -->
+        <!-- Release Date -->
         <TextView
             android:id="@+id/textReleaseDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Release Date"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:textColor="@color/white" />
 
-        <!-- Runtime / Episode Runtime -->
+        <!-- Runtime -->
         <TextView
             android:id="@+id/textRuntime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Runtime"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white" />
 
         <!-- Language -->
         <TextView
@@ -72,7 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Original Language"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white" />
 
         <!-- Genres -->
         <TextView
@@ -80,7 +84,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Genres"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white" />
 
         <!-- Status -->
         <TextView
@@ -88,7 +93,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Status"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white" />
 
         <!-- Homepage -->
         <TextView
@@ -97,15 +103,17 @@
             android:layout_height="wrap_content"
             android:text="Homepage"
             android:layout_marginTop="4dp"
+            android:textColor="@color/firefox_pink"
             android:autoLink="web" />
 
-        <!-- Vote Average and Count -->
+        <!-- Votes -->
         <TextView
             android:id="@+id/textVotes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Rating"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white" />
 
         <!-- Production Companies -->
         <TextView
@@ -114,7 +122,8 @@
             android:layout_height="wrap_content"
             android:text="Production Companies"
             android:layout_marginTop="4dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textColor="@color/white" />
 
         <!-- Production Countries -->
         <TextView
@@ -123,7 +132,7 @@
             android:layout_height="wrap_content"
             android:text="Production Countries"
             android:layout_marginTop="4dp"
-            android:visibility="gone" />
-
+            android:visibility="gone"
+            android:textColor="@color/white" />
     </LinearLayout>
 </ScrollView>
