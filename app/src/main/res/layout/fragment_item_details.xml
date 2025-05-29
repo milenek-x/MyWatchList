@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemDetailsScroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imagePoster"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Poster"
+            android:src="@drawable/rounded_corner" />
+
+        <!-- Title (Movie or TV) -->
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Title"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textStyle="bold"
+            android:textColor="@android:color/black" />
+
+        <!-- Tagline -->
+        <TextView
+            android:id="@+id/textTagline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tagline"
+            android:textStyle="italic"
+            android:visibility="gone"
+            android:textColor="@android:color/darker_gray" />
+
+        <!-- Overview -->
+        <TextView
+            android:id="@+id/textOverview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Overview"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@android:color/black" />
+
+        <!-- Release / Air Date -->
+        <TextView
+            android:id="@+id/textReleaseDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Release Date"
+            android:layout_marginTop="8dp" />
+
+        <!-- Runtime / Episode Runtime -->
+        <TextView
+            android:id="@+id/textRuntime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Runtime"
+            android:layout_marginTop="4dp" />
+
+        <!-- Language -->
+        <TextView
+            android:id="@+id/textLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Original Language"
+            android:layout_marginTop="4dp" />
+
+        <!-- Genres -->
+        <TextView
+            android:id="@+id/textGenres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Genres"
+            android:layout_marginTop="4dp" />
+
+        <!-- Status -->
+        <TextView
+            android:id="@+id/textStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:layout_marginTop="4dp" />
+
+        <!-- Homepage -->
+        <TextView
+            android:id="@+id/textHomepage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Homepage"
+            android:layout_marginTop="4dp"
+            android:autoLink="web" />
+
+        <!-- Vote Average and Count -->
+        <TextView
+            android:id="@+id/textVotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rating"
+            android:layout_marginTop="4dp" />
+
+        <!-- Production Companies -->
+        <TextView
+            android:id="@+id/textProductionCompanies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Production Companies"
+            android:layout_marginTop="4dp"
+            android:visibility="gone" />
+
+        <!-- Production Countries -->
+        <TextView
+            android:id="@+id/textProductionCountries"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Production Countries"
+            android:layout_marginTop="4dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

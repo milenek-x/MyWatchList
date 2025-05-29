@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="textRuntime" type="id" />
+    <item name="textReleaseDate" type="id" />
+    <item name="textLanguage" type="id" />
+    <item name="textStatus" type="id" />
+    <item name="textGenres" type="id" />
+    <item name="textHomepage" type="id" />
+    <item name="textVotes" type="id" />
+    <item name="textProductionCompanies" type="id" />
+</resources>

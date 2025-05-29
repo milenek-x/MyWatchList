@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.milenekx.mywatchlist.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/moviesFragment"
+        android:name="com.milenekx.mywatchlist.ui.movies.MoviesFragment"
+        android:label="Movies"
+        tools:layout="@layout/fragment_movies">
+        <action
+            android:id="@+id/action_moviesFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
+        <action
+            android:id="@+id/action_moviesFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_moviesFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="mediaId"
+                app:argType="string" />
+            <argument
+                android:name="mediaType"
+                app:argType="string" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.milenekx.mywatchlist.ui.filter.FilterFragment"
+        android:label="Filter"
+        tools:layout="@layout/fragment_filter">
+        <argument
+            android:name="selectedGenreIds"
+            app:argType="integer[]"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <argument
+            android:name="selectedYear"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="selectedCountryCodes"
+            app:argType="string[]"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <argument
+            android:name="filterType"
+            app:argType="string"
+            android:defaultValue="movie" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.milenekx.mywatchlist.ui.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search">
+        <argument
+            android:name="mediaType"
+            app:argType="string"
+            android:defaultValue="movie" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/tvFragment"
+        android:name="com.milenekx.mywatchlist.ui.tv.TVFragment"
+        android:label="TV Series"
+        tools:layout="@layout/fragment_tv">
+
+        <action
+            android:id="@+id/action_tvFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
+
+        <action
+            android:id="@+id/action_tvFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_tvFragment_to_itemDetailsFragment"
+            app:destination="@id/itemDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="mediaId"
+                app:argType="string" />
+            <argument
+                android:name="mediaType"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/itemDetailsFragment"
+        android:name="com.milenekx.mywatchlist.ui.details.ItemDetailsFragment"
+        tools:layout="@layout/fragment_item_details">
+
+        <argument
+            android:name="mediaId"
+            app:argType="string" />
+
+        <argument
+            android:name="mediaType"
+            app:argType="string" />
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="" />
+
+        <argument
+            android:name="overview"
+            app:argType="string"
+            android:defaultValue="" />
+
+        <argument
+            android:name="posterPath"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+
+
+
+</navigation>
