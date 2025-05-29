@@ -35,11 +35,11 @@ class MediaGridAdapter(
         when (item) {
             is GridMediaItem.MovieItem -> {
                 title = item.movie.title
-                posterPath = item.movie.poster_path
+                posterPath = item.movie.posterPath
             }
             is GridMediaItem.TVShowItem -> {
                 title = item.tvShow.name.toString()
-                posterPath = item.tvShow.poster_path
+                posterPath = item.tvShow.posterPath
             }
         }
 

@@ -7,25 +7,22 @@ import androidx.lifecycle.viewModelScope
 import com.milenekx.mywatchlist.data.model.GridMediaItem
 import com.milenekx.mywatchlist.data.model.Movie
 import com.milenekx.mywatchlist.data.model.TVShow
-import com.milenekx.mywatchlist.data.repository.MovieRepository
+import com.milenekx.mywatchlist.data.repository.Repository
 import kotlinx.coroutines.launch
 
-class GridViewModel(private val repository: MovieRepository) : ViewModel() {
+class GridViewModel(private val repository: Repository) : ViewModel() {
 
     val gridItems = MutableLiveData<List<GridMediaItem>>()
     val errorMessage = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
 
-    // Hold the current filter state
-    // You might want to define a data class for FilterCriteria { val genres: List<Int>?, val year: Int?, val countries: List<String>? }
     var currentFilterGenres: List<Int>? = null
     var currentFilterYear: Int? = null
     var currentFilterCountries: List<String>? = null
-    var currentMediaType: String = "movie" // Keep track of current media type
-    var currentCategoryType: String = "latest" // Keep track of current category type
+    private var currentMediaType: String = "movie"
+    var currentCategoryType: String = "latest"
 
 
-    // --- NEW FUNCTION FOR FILTERING ---
     fun fetchFilteredMovies(
         genres: List<Int>? = null,
         year: Int? = null,
@@ -33,35 +30,34 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
     ) {
         isLoading.postValue(true)
 
-        // Update current filter state
-        currentMediaType = "movie" // When applying specific filters, it's usually for movies or TV
-        currentCategoryType = "filtered" // Indicate that items are now filtered
+        currentMediaType = "movie"
+        currentCategoryType = "filtered"
         currentFilterGenres = genres
         currentFilterYear = year
         currentFilterCountries = countries
 
         viewModelScope.launch {
             try {
-                // Convert genre IDs to comma-separated string if not null
                 val genresString = genres?.joinToString(separator = ",")
-                // Convert country codes to comma-separated string if not null
+
                 val countriesString = countries?.joinToString(separator = ",")
 
                 val allFilteredMovies = mutableListOf<Movie>()
-                // Fetch first few pages for filtered results, e.g., 5 pages
-                for (page in 1..5) { // You can adjust the number of pages
+
+                for (page in 1..5) {
                     val response = repository.discoverMovies(
                         page = page,
                         genres = genresString,
                         year = year,
                         countries = countriesString
                     )
-                    if (response != null && response.isSuccessful) {
+                    if (response.isSuccessful) {
                         response.body()?.results?.let {
                             allFilteredMovies.addAll(it)
                         }
                     } else {
-                        Log.e("GridViewModel", "Failed to load filtered movies for page $page: ${response?.errorBody()?.string()}")
+                        Log.e("GridViewModel", "Failed to load filtered movies for page $page: ${
+                            response.errorBody()?.string()}")
                         errorMessage.postValue("Failed to load filtered movies.")
                         break // Stop fetching if one page fails
                     }
@@ -84,7 +80,6 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
     ) {
         isLoading.postValue(true)
 
-        // Update current filter state
         currentMediaType = "tv"
         currentCategoryType = "filtered"
         currentFilterGenres = genres
@@ -97,7 +92,7 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
                 val countriesString = countries?.joinToString(separator = ",")
 
                 val allFilteredTvShows = mutableListOf<TVShow>()
-                // Fetch first few pages for filtered results
+
                 for (page in 1..5) {
                     val response = repository.discoverTvShows(
                         page = page,
@@ -105,12 +100,13 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
                         year = year,
                         countries = countriesString
                     )
-                    if (response != null && response.isSuccessful) {
+                    if (response.isSuccessful) {
                         response.body()?.results?.let {
                             allFilteredTvShows.addAll(it)
                         }
                     } else {
-                        Log.e("GridViewModel", "Failed to load filtered TV shows for page $page: ${response?.errorBody()?.string()}")
+                        Log.e("GridViewModel", "Failed to load filtered TV shows for page $page: ${
+                            response.errorBody()?.string()}")
                         errorMessage.postValue("Failed to load filtered TV shows.")
                         break
                     }
@@ -135,9 +131,8 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
         filterYear: Int? = null,
         filterCountries: List<String>? = null
     ) {
-        isLoading.postValue(true) // Set loading to true when starting fetch
+        isLoading.postValue(true)
 
-        // Update current filter state
         currentMediaType = mediaType
         currentCategoryType = type
         currentFilterGenres = filterGenres
@@ -150,15 +145,16 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
                     "movie" -> {
                         when (type.lowercase()) {
                             "trending" -> {
-                                val allTrendingMovies = mutableListOf<Movie>() // Assuming 'Movie' is your data class for a single movie
+                                val allTrendingMovies = mutableListOf<Movie>()
                                 for (page in 1..30) {
-                                    val response = repository.fetchTrendingMovies(page) // Pass page
-                                    if (response != null && response.isSuccessful) {
+                                    val response = repository.fetchTrendingMovies(page)
+                                    if (response.isSuccessful) {
                                         response.body()?.results?.let {
                                             allTrendingMovies.addAll(it)
                                         }
                                     } else {
-                                        Log.e("FetchGridItems", "Failed to load trending movies for page $page: ${response?.errorBody()?.string()}")
+                                        Log.e("FetchGridItems", "Failed to load trending movies for page $page: ${
+                                            response.errorBody()?.string()}")
                                     }
                                 }
                                 allTrendingMovies.map { GridMediaItem.MovieItem(it) }
@@ -167,12 +163,13 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
                                 val allLatestMovies = mutableListOf<Movie>()
                                 for (page in 1..30) {
                                     val response = repository.fetchLatestMovies(page)
-                                    if (response != null && response.isSuccessful) {
+                                    if (response.isSuccessful) {
                                         response.body()?.results?.let {
                                             allLatestMovies.addAll(it)
                                         }
                                     } else {
-                                        Log.e("FetchGridItems", "Failed to load latest movies for page $page: ${response?.errorBody()?.string()}")
+                                        Log.e("FetchGridItems", "Failed to load latest movies for page $page: ${
+                                            response.errorBody()?.string()}")
                                     }
                                 }
                                 allLatestMovies.map { GridMediaItem.MovieItem(it) }
@@ -180,13 +177,14 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
                             "popular" -> {
                                 val allPopularMovies = mutableListOf<Movie>()
                                 for (page in 1..30) {
-                                    val response = repository.getPopularMovies(page) // Pass page
-                                    if (response != null && response.isSuccessful) {
+                                    val response = repository.getPopularMovies(page)
+                                    if (response.isSuccessful) {
                                         response.body()?.results?.let {
                                             allPopularMovies.addAll(it)
                                         }
                                     } else {
-                                        Log.e("FetchGridItems", "Failed to load popular movies for page $page: ${response?.errorBody()?.string()}")
+                                        Log.e("FetchGridItems", "Failed to load popular movies for page $page: ${
+                                            response.errorBody()?.string()}")
                                     }
                                 }
                                 allPopularMovies.map { GridMediaItem.MovieItem(it) }
@@ -199,13 +197,14 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
                             "trending" -> {
                                 val allTrendingTvShows = mutableListOf<TVShow>()
                                 for (page in 1..30) {
-                                    val response = repository.fetchTrendingTVShows(page) // Pass page
-                                    if (response != null && response.isSuccessful) {
+                                    val response = repository.fetchTrendingTVShows(page)
+                                    if (response.isSuccessful) {
                                         response.body()?.results?.let {
                                             allTrendingTvShows.addAll(it)
                                         }
                                     } else {
-                                        Log.e("FetchGridItems", "Failed to load trending TV shows for page $page: ${response?.errorBody()?.string()}")
+                                        Log.e("FetchGridItems", "Failed to load trending TV shows for page $page: ${
+                                            response.errorBody()?.string()}")
                                     }
                                 }
                                 allTrendingTvShows.map { GridMediaItem.TVShowItem(it) }
@@ -213,13 +212,14 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
                             "latest" -> {
                                 val allLatestTvShows = mutableListOf<TVShow>()
                                 for (page in 1..30) {
-                                    val response = repository.fetchLatestTVShows(page) // Pass page
-                                    if (response != null && response.isSuccessful) {
+                                    val response = repository.fetchLatestTVShows(page)
+                                    if (response.isSuccessful) {
                                         response.body()?.results?.let {
                                             allLatestTvShows.addAll(it)
                                         }
                                     } else {
-                                        Log.e("FetchGridItems", "Failed to load latest TV shows for page $page: ${response?.errorBody()?.string()}")
+                                        Log.e("FetchGridItems", "Failed to load latest TV shows for page $page: ${
+                                            response.errorBody()?.string()}")
                                     }
                                 }
                                 allLatestTvShows.map { GridMediaItem.TVShowItem(it) }
@@ -227,13 +227,14 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
                             "popular" -> {
                                 val allPopularTvShows = mutableListOf<TVShow>()
                                 for (page in 1..30) {
-                                    val response = repository.getPopularTVShows(page) // Pass page
-                                    if (response != null && response.isSuccessful) {
+                                    val response = repository.getPopularTVShows(page)
+                                    if (response.isSuccessful) {
                                         response.body()?.results?.let {
                                             allPopularTvShows.addAll(it)
                                         }
                                     } else {
-                                        Log.e("FetchGridItems", "Failed to load popular TV shows for page $page: ${response?.errorBody()?.string()}")
+                                        Log.e("FetchGridItems", "Failed to load popular TV shows for page $page: ${
+                                            response.errorBody()?.string()}")
                                     }
                                 }
                                 allPopularTvShows.map { GridMediaItem.TVShowItem(it) }
@@ -248,7 +249,7 @@ class GridViewModel(private val repository: MovieRepository) : ViewModel() {
             } catch (e: Exception) {
                 errorMessage.postValue("Failed to load grid items: ${e.localizedMessage}")
             } finally {
-                isLoading.postValue(false) // Set loading to false after completion (success or failure)
+                isLoading.postValue(false)
             }
         }
     }

@@ -1,7 +1,11 @@
 package com.milenekx.mywatchlist.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class SpokenLanguage(
-    val iso_639_1: String,
+    @SerializedName("iso_639_1")
+    val isoCode: String,
     val name: String,
-    val english_name: String
+    @SerializedName("english_name")
+    val englishName: String
 )

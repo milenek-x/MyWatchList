@@ -11,11 +11,11 @@ import com.bumptech.glide.Glide
 import com.milenekx.mywatchlist.R
 import com.milenekx.mywatchlist.data.model.MixedMediaItem
 
-class PopularMovieAdapter(
+class PopularAdapter(
     private var mixedMediaItems: List<MixedMediaItem>,
     private val onDetailClick: (MixedMediaItem) -> Unit,
     private val onWatchClick: (MixedMediaItem) -> Unit,
-) : RecyclerView.Adapter<PopularMovieAdapter.PopularMovieViewHolder>() {
+) : RecyclerView.Adapter<PopularAdapter.PopularMovieViewHolder>() {
 
     val realItemCount: Int
         get() = mixedMediaItems.size
@@ -44,9 +44,9 @@ class PopularMovieAdapter(
         holder.tvTitle.text = item.title ?: item.name ?: "Unknown Title"
         holder.tvTitle.isSelected = true
 
-        val genreNames = item.genre_ids?.mapNotNull { genreId ->
+        val genreNames = item.genre_ids.mapNotNull { genreId ->
             genreMap[genreId]
-        }?.joinToString(", ") ?: "Unknown"
+        }.joinToString(", ")
         holder.tvGenre.text = genreNames
 
         holder.tvType.text = when (item.media_type) {
@@ -71,7 +71,6 @@ class PopularMovieAdapter(
     }
 
     companion object {
-        // You should define this mapping from TMDB genres to names
         private val genreMap = mapOf(
             28 to "Action",
             12 to "Adventure",

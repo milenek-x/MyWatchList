@@ -1,7 +1,6 @@
 package com.milenekx.mywatchlist.ui.tv
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.milenekx.mywatchlist.R
-import com.milenekx.mywatchlist.data.repository.MovieRepository
+import com.milenekx.mywatchlist.data.repository.Repository
 import com.milenekx.mywatchlist.ui.adapter.MediaGridAdapter
 import com.milenekx.mywatchlist.viewmodel.GridViewModel
 import com.milenekx.mywatchlist.viewmodel.GridViewModelFactory
@@ -22,6 +21,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.milenekx.mywatchlist.util.navigateToItemDetails
 
+@Suppress("DEPRECATION")
 class TVFragment : Fragment(R.layout.fragment_tv) {
 
     private lateinit var viewModel: GridViewModel
@@ -55,7 +55,7 @@ class TVFragment : Fragment(R.layout.fragment_tv) {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         recyclerView.adapter = adapter
 
-        val factory = GridViewModelFactory(MovieRepository())
+        val factory = GridViewModelFactory(Repository())
         viewModel = ViewModelProvider(this, factory)[GridViewModel::class.java]
 
         viewModel.gridItems.observe(viewLifecycleOwner) { items ->

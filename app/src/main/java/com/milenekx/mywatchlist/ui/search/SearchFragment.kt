@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.milenekx.mywatchlist.R
 import com.milenekx.mywatchlist.data.model.MixedMediaItem
-import com.milenekx.mywatchlist.data.repository.MovieRepository
+import com.milenekx.mywatchlist.data.repository.Repository
 import com.milenekx.mywatchlist.ui.adapter.SearchGridAdapter
 import com.milenekx.mywatchlist.util.navigateToItemDetails
 import kotlinx.coroutines.Job
@@ -35,7 +34,7 @@ class SearchFragment : Fragment() {
 
     private lateinit var mediaType: String
 
-    private val repository = MovieRepository()
+    private val repository = Repository()
     private var searchJob: Job? = null
 
     private val genreMap = mapOf(
@@ -111,13 +110,13 @@ class SearchFragment : Fragment() {
                                     id = it.id,
                                     title = it.name,
                                     name = it.name,
-                                    poster_path = it.poster_path,
+                                    poster_path = it.posterPath,
                                     overview = it.overview,
                                     media_type = "tv",
                                     vote_average = 0.0,
-                                    genre_ids = it.genre_ids,
-                                    year = it.first_air_date.take(4),
-                                    homepage = it.homepage  // Use first_air_date here
+                                    genre_ids = it.genreIds,
+                                    year = it.firstAirDate.take(4),
+                                    homepage = it.homepage
                                 )
                             }
                         }
@@ -128,13 +127,13 @@ class SearchFragment : Fragment() {
                                     id = it.id,
                                     title = it.title,
                                     name = it.title,
-                                    poster_path = it.poster_path,
+                                    poster_path = it.posterPath,
                                     overview = it.overview,
                                     media_type = "movie",
                                     vote_average = 0.0,
-                                    genre_ids = it.genre_ids,
-                                    year = it.release_date.take(4),
-                                    homepage = it.homepage  // Use release_date here
+                                    genre_ids = it.genreIds,
+                                    year = it.releaseDate.take(4),
+                                    homepage = it.homepage
                                 )
                             }
                         }

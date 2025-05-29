@@ -1,7 +1,6 @@
 package com.milenekx.mywatchlist.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -14,10 +13,10 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.milenekx.mywatchlist.R
 import com.milenekx.mywatchlist.data.model.MixedMediaItem
-import com.milenekx.mywatchlist.data.repository.MovieRepository
+import com.milenekx.mywatchlist.data.repository.Repository
 import com.milenekx.mywatchlist.ui.adapter.HorizontalMovieAdapter
 import com.milenekx.mywatchlist.ui.adapter.HorizontalTVAdapter
-import com.milenekx.mywatchlist.ui.adapter.PopularMovieAdapter
+import com.milenekx.mywatchlist.ui.adapter.PopularAdapter
 import com.milenekx.mywatchlist.util.navigateToItemDetails
 import com.milenekx.mywatchlist.util.openWebPage
 import com.milenekx.mywatchlist.viewmodel.HomeViewModel
@@ -29,7 +28,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var viewModel: HomeViewModel
 
-    private lateinit var popularAdapter: PopularMovieAdapter
+    private lateinit var popularAdapter: PopularAdapter
     private lateinit var trendingAdapter: HorizontalMovieAdapter
     private lateinit var trendingTvAdapter: HorizontalTVAdapter
     private lateinit var latestMoviesAdapter: HorizontalMovieAdapter
@@ -50,17 +49,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         rvLatestTv = view.findViewById(R.id.rvLatestTv)
         rgTrendingToggle = view.findViewById(R.id.rgTrendingToggle)
 
-        val repository = MovieRepository()
+        val repository = Repository()
         val factory = HomeViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
-        popularAdapter = PopularMovieAdapter(
+        popularAdapter = PopularAdapter(
             emptyList(),
             onDetailClick = { item ->
                 navigateToItemDetails(item, findNavController()) },
             onWatchClick = { mixedMediaItem: MixedMediaItem ->
-                // NEW: Fetch homepage URL asynchronously
-                lifecycleScope.launch { // Use lifecycleScope to handle coroutine lifecycle
+                lifecycleScope.launch {
                     val homepageUrl = viewModel.getHomepageUrl(mixedMediaItem.id.toString(), mixedMediaItem.media_type)
                     openWebPage(requireContext(), homepageUrl)
                 }
@@ -102,7 +100,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         rvLatestTv.adapter = latestTvAdapter
         rvLatestTv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        // LiveData observers
         viewModel.popularMixedContent.observe(viewLifecycleOwner) { movies ->
             popularAdapter.updateData(movies ?: emptyList())
         }
@@ -129,7 +126,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
         }
 
-        // Handle RadioGroup toggle
         rgTrendingToggle.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.rbTrendingMovies -> {
@@ -141,7 +137,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
 
-        // Fetch initial data
-        viewModel.fetchContent(TrendingType.MOVIES) // default trending view
+        viewModel.fetchContent(TrendingType.MOVIES)
     }
 }

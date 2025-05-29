@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.milenekx.mywatchlist.R
 import com.milenekx.mywatchlist.data.model.MixedMediaItem
-import com.milenekx.mywatchlist.data.model.Movie
 
 class SearchGridAdapter(
     private var mediaList: List<MixedMediaItem>,
@@ -45,7 +44,7 @@ class SearchGridAdapter(
 
             year.text = mediaItem.year
 
-            val genreNames = mediaItem.genre_ids.mapNotNull { genreMap[it] } ?: listOf("Unknown")
+            val genreNames = mediaItem.genre_ids.mapNotNull { genreMap[it] }
             genres.text = genreNames.joinToString(", ")
 
 

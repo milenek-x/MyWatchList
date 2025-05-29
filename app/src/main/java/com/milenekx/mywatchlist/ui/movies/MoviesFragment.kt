@@ -13,16 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.milenekx.mywatchlist.R
-import com.milenekx.mywatchlist.data.repository.MovieRepository
+import com.milenekx.mywatchlist.data.repository.Repository
 import com.milenekx.mywatchlist.ui.adapter.MediaGridAdapter
 import com.milenekx.mywatchlist.viewmodel.GridViewModel
 import com.milenekx.mywatchlist.viewmodel.GridViewModelFactory
 import com.milenekx.mywatchlist.ui.filter.FilterFragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import com.milenekx.mywatchlist.data.model.GridMediaItem
 import com.milenekx.mywatchlist.util.navigateToItemDetails
 
+@Suppress("DEPRECATION")
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private lateinit var viewModel: GridViewModel
@@ -36,7 +36,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     private lateinit var btnFilter: ImageButton
     private lateinit var btnSearch: ImageButton
 
-    private var isProgrammaticChange = false // prevents triggering listeners during setup
+    private var isProgrammaticChange = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,7 +58,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
         recyclerView.adapter = adapter
 
-        val factory = GridViewModelFactory(MovieRepository())
+        val factory = GridViewModelFactory(Repository())
         viewModel = ViewModelProvider(this, factory)[GridViewModel::class.java]
 
         viewModel.gridItems.observe(viewLifecycleOwner) { items ->
@@ -178,7 +178,6 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                         && selectedYear == null
                         && selectedCountryCodes.isNullOrEmpty()
 
-                // --- 🧼 Clear UI immediately ---
                 isProgrammaticChange = true
                 chipGroupCategories.clearCheck()
                 chipLatest.isChecked = false
@@ -186,9 +185,8 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                 chipPopular.isChecked = false
                 isProgrammaticChange = false
 
-                // --- ✅ Force UI into loading state ---
-                adapter.updateData(emptyList()) // Clear current items immediately
-                loadingOverlay.visibility = View.VISIBLE // Show loader right away
+                adapter.updateData(emptyList())
+                loadingOverlay.visibility = View.VISIBLE
 
                 if (filtersAreCleared) {
                     chipLatest.isChecked = true

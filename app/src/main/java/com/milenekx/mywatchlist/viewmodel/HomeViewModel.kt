@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.milenekx.mywatchlist.data.model.MixedMediaItem
 import com.milenekx.mywatchlist.data.model.Movie
 import com.milenekx.mywatchlist.data.model.TVShow
-import com.milenekx.mywatchlist.data.repository.MovieRepository
+import com.milenekx.mywatchlist.data.repository.Repository
 import kotlinx.coroutines.launch
 
 
 
-class HomeViewModel(private val repository: MovieRepository) : ViewModel() {
+class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     val popularMixedContent = MutableLiveData<List<MixedMediaItem>>()
     val trendingMovies = MutableLiveData<List<Movie>>()
@@ -51,15 +51,18 @@ class HomeViewModel(private val repository: MovieRepository) : ViewModel() {
         }
     }
 
-    // NEW: Function to get homepage from ViewModel
     suspend fun getHomepageUrl(mediaId: String, mediaType: String): String? {
         return try {
-            if (mediaType == "movie") {
-                repository.getMovieHomepage(mediaId)
-            } else if (mediaType == "tv") {
-                repository.getTvShowHomepage(mediaId)
-            } else {
-                null
+            when (mediaType) {
+                "movie" -> {
+                    repository.getMovieHomepage(mediaId)
+                }
+                "tv" -> {
+                    repository.getTvShowHomepage(mediaId)
+                }
+                else -> {
+                    null
+                }
             }
         } catch (e: Exception) {
             errorMessage.postValue("Error fetching homepage: ${e.message}")

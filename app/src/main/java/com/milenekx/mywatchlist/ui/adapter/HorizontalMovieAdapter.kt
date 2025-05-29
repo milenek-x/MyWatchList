@@ -30,7 +30,7 @@ class HorizontalMovieAdapter(
         val movie = movies[position]
         holder.tvTitle.text = movie.title
         holder.tvTitle.isSelected = true
-        val posterUrl = "https://image.tmdb.org/t/p/w500${movie.poster_path}"
+        val posterUrl = "https://image.tmdb.org/t/p/w500${movie.posterPath}"
         Glide.with(holder.itemView.context).load(posterUrl).into(holder.ivPoster)
         holder.itemView.setOnClickListener { onItemClick(movie) }
     }

@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.milenekx.mywatchlist.R
 import com.milenekx.mywatchlist.data.model.ItemDetailsResponse
 import com.milenekx.mywatchlist.viewmodel.ItemDetailsViewModel
@@ -81,39 +80,37 @@ class ItemDetailsFragment : Fragment(R.layout.fragment_item_details) {
         titleText.text = details.title ?: details.name ?: "Untitled"
         overviewText.text = details.overview
         taglineText.text = details.tagline ?: ""
-        // Format Release Date
-        val rawDate = details.release_date ?: details.first_air_date
+
+        val rawDate = details.releaseDate ?: details.firstAirDate
         val formattedDate = rawDate?.let { formatDateToReadable(it) } ?: "N/A"
         releaseDateText.text = "Release Date: $formattedDate"
 
-        // Format Runtime
-        val runtimeMinutes = details.runtime ?: details.episode_run_time?.firstOrNull()
+        val runtimeMinutes = details.runtime ?: details.episodeRunTime?.firstOrNull()
         val formattedRuntime = runtimeMinutes?.let { formatRuntime(it) } ?: "N/A"
         runtimeText.text = "Runtime: $formattedRuntime"
 
-        // Format Language
-        val formattedLanguage = Locale(details.original_language).getDisplayLanguage(Locale.ENGLISH)
+        val formattedLanguage = Locale(details.originalLanguage).getDisplayLanguage(Locale.ENGLISH)
         languageText.text = "Language: $formattedLanguage"
 
         genresText.text = "Genres: ${details.genres?.joinToString(", ") { it.name } ?: "N/A"}"
         statusText.text = "Status: ${details.status ?: "N/A"}"
         homepageText.text = details.homepage ?: "No homepage"
-        votesText.text = "Rating: ${details.vote_average} (${details.vote_count} votes)"
+        votesText.text = "Rating: ${details.voteAverage} (${details.voteCount} votes)"
 
         productionCompaniesText.apply {
-            val value = details.production_companies?.joinToString(", ") { it.name }
+            val value = details.productionCompanies?.joinToString(", ") { it.name }
             text = "Production Companies: $value"
             visibility = if (value.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
         productionCountriesText.apply {
-            val value = details.production_countries?.joinToString(", ") { it.name }
+            val value = details.productionCountries?.joinToString(", ") { it.name }
             text = "Countries: $value"
             visibility = if (value.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
 
-        val fullPosterUrl = "https://image.tmdb.org/t/p/w500${details.poster_path}"
+        val fullPosterUrl = "https://image.tmdb.org/t/p/w500${details.posterPath}"
         Glide.with(requireContext())
             .load(fullPosterUrl)
             .placeholder(R.drawable.rounded_corner)
@@ -125,9 +122,9 @@ class ItemDetailsFragment : Fragment(R.layout.fragment_item_details) {
         return try {
             val parser = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
             val date = parser.parse(dateString)
-            val day = SimpleDateFormat("d", Locale.ENGLISH).format(date).toInt()
-            val suffix = getDaySuffix(day)
-            val formatted = SimpleDateFormat("MMMM, yyyy", Locale.ENGLISH).format(date)
+            val day = date?.let { SimpleDateFormat("d", Locale.ENGLISH).format(it).toInt() }
+            val suffix = day?.let { getDaySuffix(it) }
+            val formatted = date?.let { SimpleDateFormat("MMMM, yyyy", Locale.ENGLISH).format(it) }
             "$day$suffix $formatted"
         } catch (e: Exception) {
             "N/A"

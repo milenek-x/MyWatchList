@@ -1,27 +1,41 @@
 package com.milenekx.mywatchlist.data.model
 
+import com.google.gson.annotations.SerializedName
 
 data class ItemDetailsResponse(
     val id: Int,
-    val title: String?,                // for movies
-    val name: String?,                 // for TV
+    val title: String?,
+    val name: String?,
     val overview: String,
-    val poster_path: String?,
-    val backdrop_path: String?,
+    @SerializedName("poster_path")
+    val posterPath: String?,
+    @SerializedName("backdrop_path")
+    val backdropPath: String?,
     val genres: List<Genre>?,
     val homepage: String?,
-    val original_language: String,
-    val original_title: String?,       // for movies
-    val original_name: String?,        // for TV
-    val release_date: String?,         // for movies
-    val first_air_date: String?,       // for TV
-    val runtime: Int?,                 // for movies
-    val episode_run_time: List<Int>?,  // for TV
+    @SerializedName("original_language")
+    val originalLanguage: String,
+    @SerializedName("original_title")
+    val originalTitle: String?,
+    @SerializedName("original_name")
+    val originalName: String?,
+    @SerializedName("release_date")
+    val releaseDate: String?,
+    @SerializedName("first_air_date")
+    val firstAirDate: String?,
+    val runtime: Int?,
+    @SerializedName("episode_run_time")
+    val episodeRunTime: List<Int>?,
     val status: String?,
-    val vote_average: Double,
-    val vote_count: Int,
+    @SerializedName("vote_average")
+    val voteAverage: Double,
+    @SerializedName("vote_count")
+    val voteCount: Int,
     val tagline: String?,
-    val production_companies: List<ProductionCompany>?,
-    val production_countries: List<ProductionCountry>?,
-    val spoken_languages: List<SpokenLanguage>?
+    @SerializedName("production_companies")
+    val productionCompanies: List<ProductionCompany>?,
+    @SerializedName("production_countries")
+    val productionCountries: List<ProductionCountry>?,
+    @SerializedName("spoken_languages")
+    val spokenLanguages: List<SpokenLanguage>?
 )

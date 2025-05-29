@@ -30,9 +30,9 @@ class HorizontalTVAdapter(
         val tvShow = tvShows[position]
         holder.tvTitle.text = tvShow.name
         holder.tvTitle.isSelected = true
-        val posterUrl = "https://image.tmdb.org/t/p/w500${tvShow.poster_path}"
+        val posterUrl = "https://image.tmdb.org/t/p/w500${tvShow.posterPath}"
         Glide.with(holder.itemView.context).load(posterUrl).into(holder.ivPoster)
-        holder.itemView.setOnClickListener { onItemClick(tvShow) }  // Use the callback from constructor
+        holder.itemView.setOnClickListener { onItemClick(tvShow) }
     }
 
     override fun getItemCount() = tvShows.size

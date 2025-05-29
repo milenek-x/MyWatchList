@@ -61,9 +61,9 @@ interface TMDBApiService {
     suspend fun discoverMovies(
         @Query("api_key") apiKey: String,
         @Query("page") page: Int = 1,
-        @Query("with_genres") withGenres: String? = null, // Comma-separated genre IDs (e.g., "28,12")
-        @Query("primary_release_year") primaryReleaseYear: Int? = null, // e.g., 2023
-        @Query("with_origin_country") withOriginCountry: String? = null // Comma-separated ISO 3166-1 codes (e.g., "US,GB")
+        @Query("with_genres") withGenres: String? = null,
+        @Query("primary_release_year") primaryReleaseYear: Int? = null,
+        @Query("with_origin_country") withOriginCountry: String? = null
     ): Response<MovieResponse>
 
     @GET("search/movie")

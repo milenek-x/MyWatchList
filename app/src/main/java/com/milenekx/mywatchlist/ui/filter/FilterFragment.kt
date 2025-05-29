@@ -1,9 +1,6 @@
-// com.milenekx.mywatchlist.ui.filter.FilterFragment.kt
-
 package com.milenekx.mywatchlist.ui.filter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +19,7 @@ import com.google.android.material.chip.ChipGroup
 import com.milenekx.mywatchlist.R
 import com.milenekx.mywatchlist.data.model.Genre
 import com.milenekx.mywatchlist.data.model.Country
-import com.milenekx.mywatchlist.data.repository.MovieRepository
+import com.milenekx.mywatchlist.data.repository.Repository
 import kotlinx.coroutines.launch
 import androidx.navigation.fragment.navArgs // Import navArgs
 
@@ -37,15 +34,12 @@ class FilterFragment : Fragment() {
     private lateinit var progressBarCountries: ProgressBar
     private lateinit var tvFilterTitle: TextView
 
-    // You might consider a ViewModel for FilterFragment if it needs more complex state management
-    // For now, direct repository access is acceptable for fetching static lists.
-    private val repository = MovieRepository()
+    private val repository = Repository()
 
     private var allGenres: List<Genre> = emptyList()
     private var allCountries: List<Country> = emptyList()
 
 
-    // Use navArgs to retrieve arguments passed from MoviesFragment
     private val args: FilterFragmentArgs by navArgs()
     private val filterType: String
         get() = args.filterType
@@ -53,9 +47,9 @@ class FilterFragment : Fragment() {
 
     companion object {
         const val REQUEST_KEY_FILTERS = "request_key_filters"
-        const val BUNDLE_KEY_GENRES = "bundle_key_genres" // List<Int> genre IDs
-        const val BUNDLE_KEY_YEAR = "bundle_key_year"     // Int year
-        const val BUNDLE_KEY_COUNTRIES = "bundle_key_countries" // List<String> country codes (ISO)
+        const val BUNDLE_KEY_GENRES = "bundle_key_genres"
+        const val BUNDLE_KEY_YEAR = "bundle_key_year"
+        const val BUNDLE_KEY_COUNTRIES = "bundle_key_countries"
     }
 
     override fun onCreateView(
@@ -81,9 +75,9 @@ class FilterFragment : Fragment() {
         tvFilterTitle.text = if (filterType == "tv") "Filter TV Shows" else "Filter Movies"
 
 
-        loadFilterOptions() // Fetches genres and countries, then populates chips and pre-fills
+        loadFilterOptions()
         setupListeners()
-        prefillFilters() // Prefills the year EditText
+        prefillFilters()
     }
 
     private fun loadFilterOptions() {
@@ -107,7 +101,6 @@ class FilterFragment : Fragment() {
             }
         }
 
-        // Countries likely the same, no change needed
         progressBarCountries.visibility = View.VISIBLE
         lifecycleScope.launch {
             try {
@@ -128,41 +121,39 @@ class FilterFragment : Fragment() {
 
 
     private fun populateGenreChips(genres: List<Genre>) {
-        chipGroupGenres.removeAllViews() // Clear existing chips before adding new ones
+        chipGroupGenres.removeAllViews()
         genres.forEach { genre ->
             val chip = Chip(
                 requireContext(),
-                null, // AttributeSet, can be null
-                com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter // Correct way to apply style
+                null,
+                com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter
             ).apply {
                 text = genre.name
-                tag = genre.id // Store genre ID in tag for easy retrieval later
+                tag = genre.id
                 isCheckable = true
                 isClickable = true
             }
             chipGroupGenres.addView(chip)
         }
-        // After populating, prefill the selected ones from arguments
         prefillSelectedChips()
     }
 
     private fun populateCountryChips(countries: List<Country>) {
-        chipGroupCountries.removeAllViews() // Clear existing chips before adding new ones
-        // Sort countries alphabetically for better UX
-        countries.sortedBy { it.english_name }.forEach { country ->
+        chipGroupCountries.removeAllViews()
+        countries.sortedBy { it.englishName }.forEach { country ->
             val chip = Chip(
                 requireContext(),
-                null, // AttributeSet, can be null
-                com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter // Correct way to apply style
+                null,
+                com.google.android.material.R.style.Widget_MaterialComponents_Chip_Filter
             ).apply {
-                text = country.english_name
-                tag = country.iso_3166_1 // Store ISO code in tag
+                text = country.englishName
+                tag = country.isoCode
                 isCheckable = true
                 isClickable = true
             }
             chipGroupCountries.addView(chip)
         }
-        // After populating, prefill the selected ones from arguments
+
         prefillSelectedChips()
     }
 
@@ -177,33 +168,29 @@ class FilterFragment : Fragment() {
         }
     }
 
-    // Prefills the year EditText based on arguments
     private fun prefillFilters() {
-        if (args.selectedYear != 0) { // Default value for int argument is 0
+        if (args.selectedYear != 0) {
             etReleaseYear.setText(args.selectedYear.toString())
         }
     }
 
-    // Prefills the genre and country chips after they have been populated dynamically
+
     private fun prefillSelectedChips() {
-        // Prefill genres
-        args.selectedGenreIds?.forEach { genreId: Int -> // Explicitly type lambda parameter for clarity
+        args.selectedGenreIds?.forEach { genreId: Int ->
             for (i in 0 until chipGroupGenres.childCount) {
                 val chip = chipGroupGenres.getChildAt(i) as Chip
                 if (chip.tag == genreId) {
                     chip.isChecked = true
-                    // No break here, as multiple genres can be selected
                 }
             }
         }
 
-        // Prefill countries
-        args.selectedCountryCodes?.forEach { countryCode: String -> // Explicitly type lambda parameter for clarity
+        args.selectedCountryCodes?.forEach { countryCode: String ->
             for (i in 0 until chipGroupCountries.childCount) {
                 val chip = chipGroupCountries.getChildAt(i) as Chip
                 if (chip.tag == countryCode) {
                     chip.isChecked = true
-                    // No break here, as multiple countries can be selected
+
                 }
             }
         }
@@ -221,15 +208,14 @@ class FilterFragment : Fragment() {
             (chipGroupCountries.findViewById(id) as? Chip)?.tag as? String
         }
 
-        // Pass results back using Fragment Result API
         val resultBundle = bundleOf(
-            BUNDLE_KEY_GENRES to ArrayList(selectedGenreIds), // Must be ArrayList for bundle
+            BUNDLE_KEY_GENRES to ArrayList(selectedGenreIds),
             BUNDLE_KEY_YEAR to releaseYear,
-            BUNDLE_KEY_COUNTRIES to ArrayList(selectedCountryCodes) // Must be ArrayList for bundle
+            BUNDLE_KEY_COUNTRIES to ArrayList(selectedCountryCodes)
 
         )
         setFragmentResult(REQUEST_KEY_FILTERS, resultBundle)
-        findNavController().popBackStack() // Go back to the previous fragment
+        findNavController().popBackStack()
     }
 
     private fun resetFilters() {
@@ -237,7 +223,6 @@ class FilterFragment : Fragment() {
         chipGroupCountries.clearCheck()
         etReleaseYear.text.clear()
 
-        // Send back nulls to indicate no filters
         val resultBundle = bundleOf(
             BUNDLE_KEY_GENRES to null,
             BUNDLE_KEY_YEAR to null,
